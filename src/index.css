@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  /* Default base theme (Light mode) */
+  html {
+    background-color: #f8fafc;
+    color: #0f172a;
+    color-scheme: light;
+  }
+
+  /* Dark mode */
+  html.dark {
+    background-color: #09090b;
+    color: #f4f4f5;
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* View Transitions circular animation for theme button */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Old screen stays in place below */
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+/* New incoming screen always expands on top */
+::view-transition-new(root) {
+  z-index: 99999;
+}
+
+/* Custom scrollbars */
+html.dark ::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+html.dark ::-webkit-scrollbar-track {
+  background: #09090b;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+html ::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+html ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+html ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+html ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Hide scrollbar helper */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
