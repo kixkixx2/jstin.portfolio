@@ -36,7 +36,8 @@ jobs:
 
       - name: Build with Vite
         env:
-          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
+          VITE_OPENROUTER_API_KEY: ${{ secrets.VITE_OPENROUTER_API_KEY || secrets.OPENROUTER_API_KEY }}
+          VITE_OPENROUTER_MODEL: ${{ secrets.VITE_OPENROUTER_MODEL || secrets.OPENROUTER_MODEL }}
         run: npm run build
 
       - name: Setup Pages

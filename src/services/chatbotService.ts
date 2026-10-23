@@ -1,25 +1,46 @@
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
-const STORAGE_KEY = 'gemini_api_key';
+const KEY_STORAGE = 'openrouter_api_key';
+const MODEL_STORAGE = 'openrouter_model';
+
+const DEFAULT_BASE_URL = 'https://openrouter.ai/api/v1/chat/completions';
+
+// Sensible, highly capable default model (or user can configure any OpenRouter model)
+const DEFAULT_MODEL =
+  (import.meta.env.VITE_OPENROUTER_MODEL as string) ||
+  'meta-llama/llama-3.3-70b-instruct:free';
 
 export const getStoredApiKey = (): string => {
   if (typeof window === 'undefined') return '';
   return (
-    localStorage.getItem(STORAGE_KEY) ||
-    (import.meta.env.VITE_GEMINI_API_KEY as string) ||
+    localStorage.getItem(KEY_STORAGE) ||
+    (import.meta.env.VITE_OPENROUTER_API_KEY as string) ||
+    (import.meta.env.VITE_AI_API_KEY as string) ||
     ''
   );
 };
 
 export const setStoredApiKey = (key: string): void => {
   if (typeof window !== 'undefined') {
-    localStorage.setItem(STORAGE_KEY, key.trim());
+    localStorage.setItem(KEY_STORAGE, key.trim());
   }
 };
 
-export const removeStoredApiKey = (): void => {
+export const getStoredModel = (): string => {
+  if (typeof window === 'undefined') return DEFAULT_MODEL;
+  return localStorage.getItem(MODEL_STORAGE) || DEFAULT_MODEL;
+};
+
+export const setStoredModel = (model: string): void => {
   if (typeof window !== 'undefined') {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.setItem(MODEL_STORAGE, model.trim());
+  }
+};
+
+export const removeStoredConfig = (): void => {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem(KEY_STORAGE);
+    localStorage.removeItem(MODEL_STORAGE);
   }
 };
 
@@ -40,12 +61,12 @@ About Jastin Lamug:
   • Frontend: React 19, TypeScript, JavaScript (ESNext), Tailwind CSS, Vite, HTML5, CSS3
   • Backend & Systems: Python, Node.js, Express, Flask, C++, SQL, SQLite, Socket.IO, WebSockets
   • Data Science & ML: High-dimensional UMAP manifold projection, K-Means clustering, Scikit-learn, Pandas, NumPy
-  • Automation & Tools: n8n workflow orchestration, Webhooks, REST APIs, Git, Google Gemini AI
+  • Automation & Tools: n8n workflow orchestration, Webhooks, REST APIs, Git
 - Featured Projects:
   1. K-UMAP Health Analytics (Thesis): Machine learning pipeline for Isabela State University infirmary student records combining UMAP and K-Means.
   2. Queue Management System (DMW/OWWA): Standalone offline-resilient local network queue system with sub-millisecond Socket.IO synchronization and SQLite data storage for overseas worker migrant facilities.
   3. J.P. Lamug-Daquioag Clinic Portal: Live patient portal and services directory for OB-GYNE practice (https://j-p-lamug-daquioag.vercel.app/).
-  4. Stock Market News Intelligence: Automated n8n pipeline analyzing financial news feeds using Gemini AI sentiment extraction and Discord webhooks.
+  4. Stock Market News Intelligence: Automated n8n pipeline analyzing financial news feeds using sentiment extraction and Discord webhooks.
   5. Gmail Signature Generator Studio: Interactive client-side HTML email signature studio with real-time preview (https://kixkixx2.github.io/gmail.sig.generator/).
 - Contact Channels & Links:
   • Resume: https://kixkixx2.github.io/resume/
@@ -68,22 +89,38 @@ export const getLocalChatbotResponse = (query: string): string => {
 
   if (q.startsWith('set-key ') || q.startsWith('api-key ')) {
     const key = q.replace(/^(set-key|api-key)\s+/, '').trim();
-    if (!key) return 'Error: Please provide a valid Gemini API key. Usage: set-key YOUR_API_KEY';
+    if (!key) return 'Error: Please provide your OpenRouter API key. Usage: set-key sk-or-v1-...';
     setStoredApiKey(key);
-    return '✓ Gemini API key successfully saved to localStorage!\nThe chatbot is now running with live Google Gemini AI.';
+    return `✓ OpenRouter API key saved to localStorage!\nLive AI chat is active (Model: ${getStoredModel()}).`;
+  }
+
+  if (q.startsWith('set-model ') || q.startsWith('model ')) {
+    const model = q.replace(/^(set-model|model)\s+/, '').trim();
+    if (!model) return 'Error: Please provide a model identifier (e.g. "meta-llama/llama-3.3-70b-instruct:free" or "openai/gpt-4o-mini").';
+    setStoredModel(model);
+    return `✓ OpenRouter model switched to: ${model}`;
   }
 
   if (q === 'clear-key' || q === 'remove-key') {
-    removeStoredApiKey();
-    return '✓ Gemini API key removed. Reverted to built-in offline assistant.';
+    removeStoredConfig();
+    return '✓ OpenRouter key cleared. Reverted to built-in offline assistant.';
   }
 
-  if (q === 'key' || q === 'check-key') {
+  if (q === 'key' || q === 'check-key' || q === 'status' || q === 'openrouter') {
     const key = getStoredApiKey();
+    const model = getStoredModel();
     if (key) {
-      return `✓ Gemini API key is active (${key.slice(0, 4)}...${key.slice(-4)}). Using live Gemini AI.`;
+      return `OpenRouter Status: ACTIVE 🟢
+• API Key: ${key.slice(0, 10)}...${key.slice(-4)}
+• Model: ${model}
+• Endpoint: https://openrouter.ai/api/v1/chat/completions
+Live AI queries are active!`;
     }
-    return 'No Gemini API key currently set. Using built-in offline responses.\n(To connect live Gemini AI on GitHub Pages, set VITE_GEMINI_API_KEY or type: set-key YOUR_API_KEY)';
+    return `OpenRouter Status: OFFLINE (Using built-in assistant)
+• Target Model: ${model}
+• API Key: Not set
+To connect your OpenRouter key, add VITE_OPENROUTER_API_KEY to GitHub Secrets or type in terminal:
+set-key sk-or-v1-...`;
   }
 
   if (q === 'help' || q === 'commands' || q.includes('what can you do')) {
@@ -96,7 +133,9 @@ export const getLocalChatbotResponse = (query: string): string => {
 • "resume" / "cv" — Direct link to interactive resume
 • "hire me" / "availability" — Work status and collaboration opportunities
 • "contact" / "email" — Direct contact channels and links
-• "set-key <API_KEY>" — Configure Gemini API key for live AI
+• "set-key <API_KEY>" — Configure OpenRouter API key (sk-or-v1-...)
+• "set-model <MODEL>" — Switch model (e.g. meta-llama/llama-3.3-70b-instruct:free)
+• "status" — Check active OpenRouter configuration
 • "clear" — Clear console history`;
   }
 
@@ -116,7 +155,7 @@ He combines solid algorithmic fundamentals with hands-on full-stack development,
 • Frontend: React 19, TypeScript, JavaScript, Tailwind CSS, Vite, HTML5/CSS3
 • Backend & Databases: Python, Node.js, Express, Flask, C++, SQL, SQLite, Socket.IO
 • Data Science & ML: UMAP manifold projection, K-Means clustering, Pandas, NumPy, Scikit-learn
-• Automation & Tools: n8n, Webhooks, REST APIs, Git, Google Gemini AI`;
+• Automation & Tools: n8n, Webhooks, REST APIs, Git`;
   }
 
   if (q.includes('project') || q.includes('work') || q.includes('built') || q.includes('thesis')) {
@@ -124,7 +163,7 @@ He combines solid algorithmic fundamentals with hands-on full-stack development,
 1. K-UMAP Health Analytics (Thesis) — Dual-algorithmic ML dimensionality reduction & clustering pipeline for student health records.
 2. Queue Management System — Standalone offline local network queuing architecture deployed for DMW/OWWA migrant worker facilities.
 3. J.P. Lamug-Daquioag Clinic Portal — Healthcare clinic web application with service directory and appointment inquiries.
-4. Stock Market News Intelligence — Automated n8n financial news pipeline with Gemini AI sentiment routing to Discord.
+4. Stock Market News Intelligence — Automated n8n financial news pipeline with sentiment routing to Discord.
 5. Gmail Signature Generator Studio — Responsive HTML email signature designer studio.`;
   }
 
@@ -167,7 +206,7 @@ Send a direct email to ${PORTFOLIO_DATA.profile.email} or view his resume at htt
   }
 
   if (q.includes('hello') || q.includes('hi') || q === 'hey' || q.includes('good morning') || q.includes('good afternoon')) {
-    return `Hello! 👋 Great to meet you! How can I help you learn more about Jastin's web development, office IT experience, or projects today?`;
+    return `Hello! Great to meet you! How can I help you learn more about Jastin's web development, office IT experience, or projects today?`;
   }
 
   if (q.includes('thank')) {
@@ -185,46 +224,54 @@ I'm Jastin's assistant bot. You can ask me about his:
 • Contact channels ("contact")`;
 };
 
-export const fetchGeminiResponse = async (
+export const fetchOpenRouterResponse = async (
   prompt: string,
-  apiKey: string
+  apiKey: string,
+  model: string
 ): Promise<string> => {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-
   const payload = {
-    contents: [
+    model: model || DEFAULT_MODEL,
+    messages: [
+      {
+        role: 'system',
+        content: SYSTEM_INSTRUCTION,
+      },
       {
         role: 'user',
-        parts: [{ text: prompt }],
+        content: prompt,
       },
     ],
-    systemInstruction: {
-      parts: [{ text: SYSTEM_INSTRUCTION }],
-    },
-    generationConfig: {
-      temperature: 0.7,
-      maxOutputTokens: 600,
-    },
+    temperature: 0.7,
+    max_tokens: 600,
   };
 
-  const response = await fetch(url, {
+  const response = await fetch(DEFAULT_BASE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+      'HTTP-Referer': 'https://kixkixx2.github.io/portfolio_v3/',
+      'X-Title': 'Jastin Lamug Portfolio',
     },
     body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    const message = errorData?.error?.message || `API error (${response.status})`;
+    const message =
+      errorData?.error?.message ||
+      errorData?.message ||
+      `OpenRouter API error (${response.status})`;
     throw new Error(message);
   }
 
   const data = await response.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  const text =
+    data?.choices?.[0]?.message?.content ||
+    data?.choices?.[0]?.text;
+
   if (!text) {
-    throw new Error('No response text generated by Gemini.');
+    throw new Error('No response text received from OpenRouter.');
   }
 
   return text.trim();
@@ -234,34 +281,41 @@ export const queryChatbot = async (query: string): Promise<string> => {
   const q = query.trim();
   if (!q) return '';
 
-  // Intercept direct terminal commands first
   const lower = q.toLowerCase();
   if (
     lower === 'clear' ||
     lower.startsWith('set-key ') ||
     lower.startsWith('api-key ') ||
+    lower.startsWith('set-model ') ||
+    lower.startsWith('model ') ||
     lower === 'clear-key' ||
     lower === 'remove-key' ||
     lower === 'key' ||
-    lower === 'check-key'
+    lower === 'check-key' ||
+    lower === 'status' ||
+    lower === 'openrouter'
   ) {
     return getLocalChatbotResponse(q);
   }
 
   const apiKey = getStoredApiKey();
+  const model = getStoredModel();
 
   if (apiKey) {
     try {
-      const liveResponse = await fetchGeminiResponse(q, apiKey);
+      const liveResponse = await fetchOpenRouterResponse(
+        q,
+        apiKey,
+        model
+      );
       return liveResponse;
     } catch (err: unknown) {
       const errorMsg = err instanceof Error ? err.message : String(err);
-      console.warn('Gemini API call failed, falling back to local handler:', errorMsg);
+      console.warn('OpenRouter call failed, falling back to local handler:', errorMsg);
       const fallback = getLocalChatbotResponse(q);
-      return `${fallback}\n\n[Note: Gemini API returned: "${errorMsg}". Used local response.]`;
+      return `${fallback}\n\n[OpenRouter notice: ${errorMsg}. Served local response.]`;
     }
   }
 
-  // No API key: return smart local answer
   return getLocalChatbotResponse(q);
 };

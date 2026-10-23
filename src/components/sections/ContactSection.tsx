@@ -257,13 +257,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ scrollProgress }
                   {hasApiKey ? (
                     <div className="flex items-center gap-1 px-2 py-0.5 rounded bg-lime-500/20 text-lime-400 text-[10px] font-mono">
                       <Sparkles className="w-3 h-3 text-lime-400" />
-                      <span>Gemini AI Active</span>
+                      <span>OpenRouter Active</span>
                     </div>
                   ) : (
                     <button
                       onClick={() => executeCommand('key')}
                       className="flex items-center gap-1 px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-200 text-[10px] font-mono transition-colors cursor-pointer"
-                      title="Check or configure Gemini API key"
+                      title="Check or configure OpenRouter API key"
                     >
                       <Key className="w-3 h-3 text-zinc-400" />
                       <span>API Key Setup</span>
