@@ -8,7 +8,7 @@ const DEFAULT_BASE_URL = 'https://openrouter.ai/api/v1/chat/completions';
 // Sensible, highly capable default model (or user can configure any OpenRouter model)
 const DEFAULT_MODEL =
   (import.meta.env.VITE_OPENROUTER_MODEL as string) ||
-  'meta-llama/llama-3.3-70b-instruct:free';
+  'google/gemma-4-31b-it:free';
 
 export const getStoredApiKey = (): string => {
   if (typeof window === 'undefined') return '';
@@ -96,7 +96,7 @@ export const getLocalChatbotResponse = (query: string): string => {
 
   if (q.startsWith('set-model ') || q.startsWith('model ')) {
     const model = q.replace(/^(set-model|model)\s+/, '').trim();
-    if (!model) return 'Error: Please provide a model identifier (e.g. "meta-llama/llama-3.3-70b-instruct:free" or "openai/gpt-4o-mini").';
+    if (!model) return 'Error: Please provide a model identifier (e.g. "google/gemma-4-31b-it:free" or "openai/gpt-4o-mini").';
     setStoredModel(model);
     return `✓ OpenRouter model switched to: ${model}`;
   }
@@ -134,7 +134,7 @@ set-key sk-or-v1-...`;
 • "hire me" / "availability" — Work status and collaboration opportunities
 • "contact" / "email" — Direct contact channels and links
 • "set-key <API_KEY>" — Configure OpenRouter API key (sk-or-v1-...)
-• "set-model <MODEL>" — Switch model (e.g. meta-llama/llama-3.3-70b-instruct:free)
+• "set-model <MODEL>" — Switch model (e.g. google/gemma-4-31b-it:free)
 • "status" — Check active OpenRouter configuration
 • "clear" — Clear console history`;
   }
