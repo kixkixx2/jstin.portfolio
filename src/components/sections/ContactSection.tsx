@@ -132,7 +132,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ scrollProgress }
   return (
     <section
       id="contact"
-      className="relative shrink-0 w-[94vw] sm:w-[90vw] lg:w-[1200px] xl:w-[1300px] h-full flex flex-col justify-center px-6 sm:px-12 py-10 select-none"
+      className="relative shrink-0 w-[95vw] md:w-[85vw] lg:w-[900px] h-full flex flex-col justify-center px-6 sm:px-12 py-10 select-none"
     >
       {/* Background Section Index */}
       <div

@@ -10,7 +10,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ scrollProgress }) =>
   return (
     <section
       id="about"
-      className="relative shrink-0 w-[92vw] sm:w-[86vw] lg:w-[1050px] xl:w-[1150px] h-full flex flex-col justify-center px-6 sm:px-12 py-10 select-none"
+      className="relative shrink-0 w-[95vw] md:w-[85vw] lg:w-[900px] h-full flex flex-col justify-center px-6 sm:px-12 py-10 select-none"
     >
       {/* Background Section Index */}
       <div

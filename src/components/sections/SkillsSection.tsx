@@ -28,7 +28,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ scrollProgress }) 
   return (
     <section
       id="skills"
-      className="relative shrink-0 w-[94vw] sm:w-[90vw] lg:w-[1240px] xl:w-[1360px] h-full flex flex-col justify-center px-6 sm:px-12 py-8 select-none"
+      className="relative shrink-0 w-[95vw] md:w-[85vw] lg:w-[900px] h-full flex flex-col justify-center px-6 sm:px-12 py-8 select-none"
     >
       {/* Background Section Index */}
       <div
