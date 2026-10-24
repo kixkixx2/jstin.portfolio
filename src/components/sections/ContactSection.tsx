@@ -10,29 +10,30 @@ interface ContactSectionProps {
 // Robust typed output message component that locks in after completion
 const TypedOutputMessage: React.FC<{ text: string; onProgress?: () => void; onComplete?: () => void }> = ({ text, onProgress, onComplete }) => {
   const [displayedText, setDisplayedText] = useState('');
-  const [isDone, setIsDone] = useState(false);
+  const onProgressRef = useRef(onProgress);
+  const onCompleteRef = useRef(onComplete);
 
   useEffect(() => {
-    if (isDone) {
-      setDisplayedText(text);
-      return;
-    }
+    onProgressRef.current = onProgress;
+    onCompleteRef.current = onComplete;
+  }, [onProgress, onComplete]);
 
+  useEffect(() => {
     let i = 0;
+    setDisplayedText('');
     const interval = setInterval(() => {
       if (i < text.length) {
         setDisplayedText(text.slice(0, i + 1));
         i++;
-        if (onProgress) onProgress();
+        onProgressRef.current?.();
       } else {
         clearInterval(interval);
-        setIsDone(true);
-        if (onComplete) onComplete();
+        onCompleteRef.current?.();
       }
     }, 8);
 
     return () => clearInterval(interval);
-  }, [text, isDone, onProgress, onComplete]);
+  }, [text]);
 
   return <span>{displayedText}</span>;
 };

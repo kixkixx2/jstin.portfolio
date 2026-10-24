@@ -48,9 +48,6 @@ export const IntroSection: React.FC<IntroSectionProps> = ({
               Jastin <span className="text-slate-400 dark:text-zinc-500 font-light">Lamug</span>
             </h1>
 
-            <p className="text-base sm:text-xl text-slate-700 dark:text-zinc-300 font-light leading-relaxed max-w-xl">
-              Crafting <span className="text-lime-600 dark:text-lime-400 font-normal">clean digital experiences</span>, offline-resilient systems, and intelligent web applications.
-            </p>
 
             {/* Action Buttons with distinct interactive hover effects */}
             <div className="flex flex-wrap items-center gap-4 pt-4">
