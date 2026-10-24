@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Mail } from 'lucide-react';
+import { ArrowDown, ArrowRight, Mail } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../../data/portfolioData';
 
 interface IntroSectionProps {
@@ -19,7 +19,7 @@ export const IntroSection: React.FC<IntroSectionProps> = ({
   return (
     <section
       id="intro"
-      className="relative shrink-0 w-[95vw] md:w-[85vw] lg:w-[900px] h-full flex flex-col justify-center px-6 sm:px-12 py-10 select-none"
+      className="relative shrink-0 w-[95vw] md:w-[85vw] lg:w-[900px] h-full overflow-y-auto flex flex-col justify-start px-6 sm:px-12 py-10 select-none max-lg:w-full max-lg:h-auto max-lg:min-h-0 max-lg:min-w-0 max-lg:overflow-x-hidden max-lg:overflow-y-visible"
     >
       {/* Background Parallax Layer */}
       <div
@@ -153,8 +153,12 @@ export const IntroSection: React.FC<IntroSectionProps> = ({
           </div>
         </div>
 
-        {/* Horizontal Navigation Hint */}
-        <div className="mt-6 flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-zinc-500 animate-pulse">
+        <div className="mt-6 flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-zinc-500 animate-pulse lg:hidden">
+          <span className="w-4 h-[1px] bg-slate-300 dark:bg-zinc-700" />
+          <span>Scroll down to explore</span>
+          <ArrowDown className="w-3.5 h-3.5 text-lime-600 dark:text-lime-400" />
+        </div>
+        <div className="mt-6 hidden lg:flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-zinc-500 animate-pulse">
           <span className="w-4 h-[1px] bg-slate-300 dark:bg-zinc-700" />
           <span>Scroll trackpad or wheel horizontally to navigate</span>
           <ArrowRight className="w-3.5 h-3.5 text-lime-600 dark:text-lime-400" />

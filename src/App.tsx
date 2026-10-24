@@ -12,6 +12,7 @@ import { ContactSection } from './components/sections/ContactSection';
 import { ProjectModal } from './components/modals/ProjectModal';
 import { CertificateModal } from './components/modals/CertificateModal';
 import { PORTFOLIO_DATA, Project, Certification } from './data/portfolioData';
+import { scrollToSectionInContainer } from './layout';
 
 const SECTIONS = [
   { id: 'intro', label: 'Intro', number: '01' },
@@ -126,10 +127,7 @@ export default function App() {
 
     const container = el.parentElement;
     if (container) {
-      container.scrollTo({
-        left: el.offsetLeft,
-        behavior: 'smooth',
-      });
+      scrollToSectionInContainer(container, el);
     }
   };
 

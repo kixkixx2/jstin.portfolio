@@ -22,7 +22,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   return (
     <section
       id="projects"
-      className="relative shrink-0 w-[95vw] md:w-[85vw] lg:w-[1100px] h-full flex flex-col justify-center px-6 sm:px-12 py-8 select-none"
+      className="relative shrink-0 w-[95vw] md:w-[85vw] lg:w-[1100px] h-full overflow-y-auto flex flex-col justify-start px-6 sm:px-12 py-8 select-none max-lg:w-full max-lg:h-auto max-lg:min-h-0 max-lg:min-w-0 max-lg:overflow-x-hidden max-lg:overflow-y-visible"
     >
       {/* Background Section Index */}
       <div

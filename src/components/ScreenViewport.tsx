@@ -18,6 +18,7 @@ export const ScreenViewport: React.FC<ScreenViewportProps> = ({
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [iframeKey, setIframeKey] = useState(0);
   const [viewMode, setViewMode] = useState<'desktop' | 'responsive'>('responsive');
+  const [fluidHeight, setFluidHeight] = useState(500);
 
   // Standard 16:10 laptop/desktop viewport for scaled mode
   const DESKTOP_WIDTH = 1280;
@@ -29,6 +30,7 @@ export const ScreenViewport: React.FC<ScreenViewportProps> = ({
       const availableWidth = containerRef.current.clientWidth;
       const calculatedScale = Math.min(availableWidth / DESKTOP_WIDTH, 1);
       setScale(Math.max(calculatedScale, 0.4));
+      setFluidHeight(Math.min(500, window.innerHeight * 0.55));
     };
 
     updateScale();
@@ -45,7 +47,7 @@ export const ScreenViewport: React.FC<ScreenViewportProps> = ({
     setIframeKey((prev) => prev + 1);
   };
 
-  const screenHeight = viewMode === 'desktop' ? DESKTOP_HEIGHT * scale : 500;
+  const screenHeight = viewMode === 'desktop' ? DESKTOP_HEIGHT * scale : fluidHeight;
 
   return (
     <div className="w-full flex flex-col items-center select-none" ref={containerRef}>

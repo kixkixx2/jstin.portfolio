@@ -30,7 +30,7 @@ export const VersionArchiveSection: React.FC<VersionArchiveSectionProps> = ({
   return (
     <section
       id="archive"
-      className="relative shrink-0 w-[95vw] md:w-[85vw] lg:w-[900px] h-full flex flex-col justify-center px-6 sm:px-12 py-8 select-none"
+      className="relative shrink-0 w-[95vw] md:w-[85vw] lg:w-[900px] h-full flex flex-col justify-center px-6 sm:px-12 py-8 select-none max-lg:w-full max-lg:h-auto max-lg:min-h-0 max-lg:min-w-0 max-lg:overflow-x-hidden max-lg:overflow-y-visible max-lg:justify-start"
     >
       {/* Background Section Index */}
       <div

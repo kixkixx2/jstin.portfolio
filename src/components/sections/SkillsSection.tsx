@@ -28,7 +28,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ scrollProgress }) 
   return (
     <section
       id="skills"
-      className="relative shrink-0 w-[95vw] md:w-[85vw] lg:w-[900px] h-full flex flex-col justify-center px-6 sm:px-12 py-8 select-none"
+      className="relative shrink-0 w-[95vw] md:w-[85vw] lg:w-[900px] h-full flex flex-col justify-center px-6 sm:px-12 py-8 select-none max-lg:w-full max-lg:h-auto max-lg:min-h-0 max-lg:min-w-0 max-lg:overflow-x-hidden max-lg:overflow-y-visible max-lg:justify-start"
     >
       {/* Background Section Index */}
       <div
@@ -93,7 +93,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ scrollProgress }) 
         </div>
 
         {/* 20 Skills Grid with Official Logos */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-h-[62vh] overflow-y-auto pr-1">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-h-[62vh] overflow-y-auto pr-1 max-lg:max-h-none max-lg:overflow-visible">
           {filteredSkills.map((skill) => (
             <div
               key={skill.name}
