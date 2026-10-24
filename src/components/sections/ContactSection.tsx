@@ -7,6 +7,33 @@ interface ContactSectionProps {
   scrollProgress: number;
 }
 
+// Typing effect component for bot output
+const TypingEffect: React.FC<{ text: string; speed?: number; onProgress?: () => void; onComplete?: () => void }> = ({ text, speed = 8, onProgress, onComplete }) => {
+  const [displayedText, setDisplayedText] = useState('');
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setDisplayedText((prev) => {
+        if (i < text.length) {
+          const next = text.slice(0, i + 1);
+          i++;
+          if (onProgress) onProgress();
+          return next;
+        } else {
+          clearInterval(interval);
+          if (onComplete) onComplete();
+          return prev;
+        }
+      });
+    }, speed);
+
+    return () => clearInterval(interval);
+  }, [text, speed, onProgress, onComplete]);
+
+  return <span>{displayedText}</span>;
+};
+
 export const ContactSection: React.FC<ContactSectionProps> = ({ scrollProgress }) => {
   const { profile } = PORTFOLIO_DATA;
   const [copied, setCopied] = useState(false);
@@ -294,7 +321,24 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ scrollProgress }
                       </div>
                     ) : (
                       <div className="text-zinc-300 whitespace-pre-wrap pl-3 border-l border-zinc-700">
-                        {log.text}
+                        {idx === terminalLogs.length - 1 ? (
+                          <TypingEffect
+                            text={log.text}
+                            speed={8}
+                            onProgress={() => {
+                              if (terminalLogsRef.current) {
+                                terminalLogsRef.current.scrollTop = terminalLogsRef.current.scrollHeight;
+                              }
+                            }}
+                            onComplete={() => {
+                              if (terminalLogsRef.current) {
+                                terminalLogsRef.current.scrollTop = terminalLogsRef.current.scrollHeight;
+                              }
+                            }}
+                          />
+                        ) : (
+                          log.text
+                        )}
                       </div>
                     )}
                   </div>
