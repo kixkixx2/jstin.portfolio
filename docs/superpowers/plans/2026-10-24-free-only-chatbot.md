@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Ensure the public chatbot only attempts free OpenRouter models and remains usable through local responses when free routing is unavailable.
+**Goal:** Ensure the public chatbot requests OpenRouter's explicit free router instead of paid-capable automatic routing.
 
-**Architecture:** Keep model selection in `chatbotService.ts`. Restore Vite's build-time model mapping, filter configured models to `:free` identifiers, remove paid-capable `openrouter/auto`, and make `queryChatbot` return the existing local response after all free candidates fail. Preserve console diagnostics without exposing the API key.
+**Architecture:** Keep model selection in `chatbotService.ts`. Restore Vite's build-time model mapping, default to OpenRouter's `openrouter/free` router, remove paid-capable `openrouter/auto`, and preserve console diagnostics without exposing the API key.
 
 **Tech Stack:** React 19, TypeScript, Vite, OpenRouter Chat Completions API, npm scripts.
 

@@ -5,10 +5,10 @@ const MODEL_STORAGE = 'openrouter_model';
 
 const DEFAULT_BASE_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-// Sensible, highly capable default model (or user can configure any OpenRouter model)
+// OpenRouter's free router selects an available free model for the request.
 const DEFAULT_MODEL =
   (import.meta.env.VITE_OPENROUTER_MODEL as string) ||
-  'google/gemma-4-31b-it:free';
+  'openrouter/free';
 
 export const getStoredApiKey = (): string => {
   if (typeof window === 'undefined') return '';
@@ -230,8 +230,7 @@ const FALLBACK_FREE_MODELS = [
   'google/gemma-2-9b-it:free',
   'liquid/lfm-2.5-2.6b:free',
   'meta-llama/llama-3.2-3b-instruct:free',
-  'mistralai/mistral-7b-instruct:free',
-  'openrouter/auto'
+  'mistralai/mistral-7b-instruct:free'
 ];
 
 export const fetchOpenRouterResponse = async (
