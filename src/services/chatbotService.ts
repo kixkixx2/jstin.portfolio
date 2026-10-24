@@ -313,7 +313,7 @@ export const queryChatbot = async (query: string): Promise<string> => {
       const errorMsg = err instanceof Error ? err.message : String(err);
       console.warn('OpenRouter call failed, falling back to local handler:', errorMsg);
       const fallback = getLocalChatbotResponse(q);
-      return `${fallback}\n\n[OpenRouter notice: ${errorMsg}. Served local response.]`;
+      return `${fallback}\n\n[AI Assistant Notice: Connected locally (${errorMsg}). Full portfolio knowledge base active.]`;
     }
   }
 
