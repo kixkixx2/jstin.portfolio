@@ -224,57 +224,84 @@ I'm Jastin's assistant bot. You can ask me about his:
 • Contact channels ("contact")`;
 };
 
+const FALLBACK_FREE_MODELS = [
+  'google/gemma-4-31b-it:free',
+  'qwen/qwen-2.5-coder-32b-instruct:free',
+  'google/gemma-2-9b-it:free',
+  'liquid/lfm-2.5-2.6b:free',
+  'meta-llama/llama-3.2-3b-instruct:free',
+  'mistralai/mistral-7b-instruct:free',
+  'openrouter/auto'
+];
+
 export const fetchOpenRouterResponse = async (
   prompt: string,
   apiKey: string,
-  model: string
+  requestedModel: string
 ): Promise<string> => {
-  const payload = {
-    model: model || DEFAULT_MODEL,
-    messages: [
-      {
-        role: 'system',
-        content: SYSTEM_INSTRUCTION,
-      },
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
-    temperature: 0.7,
-    max_tokens: 600,
-  };
+  const modelsToTry = Array.from(
+    new Set([requestedModel, DEFAULT_MODEL, ...FALLBACK_FREE_MODELS])
+  ).filter(Boolean);
 
-  const response = await fetch(DEFAULT_BASE_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-      'HTTP-Referer': 'https://kixkixx2.github.io/portfolio_v3/',
-      'X-Title': 'Jastin Lamug Portfolio',
-    },
-    body: JSON.stringify(payload),
-  });
+  let lastErrorDetails = '';
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    const message =
-      errorData?.error?.message ||
-      errorData?.message ||
-      `OpenRouter API error (${response.status})`;
-    throw new Error(message);
+  for (const currentModel of modelsToTry) {
+    try {
+      const payload = {
+        model: currentModel,
+        messages: [
+          {
+            role: 'system',
+            content: SYSTEM_INSTRUCTION,
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        temperature: 0.7,
+        max_tokens: 600,
+      };
+
+      const response = await fetch(DEFAULT_BASE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+          'HTTP-Referer': 'https://kixkixx2.github.io/portfolio_v3/',
+          'X-Title': 'Jastin Lamug Portfolio',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const message =
+          errorData?.error?.message ||
+          errorData?.message ||
+          `HTTP ${response.status}`;
+        lastErrorDetails = `Model "${currentModel}": ${message}`;
+        console.warn(`OpenRouter model ${currentModel} failed: ${message}. Trying fallback model...`);
+        continue;
+      }
+
+      const data = await response.json();
+      const text =
+        data?.choices?.[0]?.message?.content ||
+        data?.choices?.[0]?.text;
+
+      if (text && text.trim()) {
+        return text.trim();
+      } else {
+        lastErrorDetails = `Model "${currentModel}" returned empty content.`;
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      lastErrorDetails = `Model "${currentModel}": ${msg}`;
+    }
   }
 
-  const data = await response.json();
-  const text =
-    data?.choices?.[0]?.message?.content ||
-    data?.choices?.[0]?.text;
-
-  if (!text) {
-    throw new Error('No response text received from OpenRouter.');
-  }
-
-  return text.trim();
+  throw new Error(`All candidate OpenRouter endpoints failed. (${lastErrorDetails})`);
 };
 
 export const queryChatbot = async (query: string): Promise<string> => {
@@ -311,9 +338,8 @@ export const queryChatbot = async (query: string): Promise<string> => {
       return liveResponse;
     } catch (err: unknown) {
       const errorMsg = err instanceof Error ? err.message : String(err);
-      console.warn('OpenRouter call failed, falling back to local handler:', errorMsg);
-      const fallback = getLocalChatbotResponse(q);
-      return `${fallback}\n\n[AI Assistant Notice: Connected locally (${errorMsg}). Full portfolio knowledge base active.]`;
+      console.error('OpenRouter live query error:', errorMsg);
+      return `⚠️ OpenRouter API Error: ${errorMsg}\n\nType 'status' to verify your key and model settings, or 'set-key <API_KEY>' to update your key.`;
     }
   }
 
