@@ -62,9 +62,9 @@ export const PORTFOLIO_DATA = {
     location: "Isabela, Philippines",
     status: "Available for Web Development & Engineering Roles",
     images: {
-      profile: "/assets/v2/profile.jpg",
-      about: "/assets/v1/about.jpg",
-      full: "/assets/jastin_full.jpg",
+      profile: \"assets/v2/profile.jpg",
+      about: \"assets/v1/about.jpg",
+      full: \"assets/jastin_full.jpg",
     },
     metrics: [
       { label: "Academic Standing", value: "Cum Laude", subtext: "GWA 1.518" },
@@ -81,11 +81,11 @@ export const PORTFOLIO_DATA = {
       category: "Academic" as const,
       categoryLabel: "Academic · Thesis Project",
       date: "Dec 2025",
-      image: "/assets/projects/k-umap/k1.png",
+      image: \"assets/projects/k-umap/k1.png",
       gallery: [
-        "/assets/projects/k-umap/k1.png",
-        "/assets/projects/k-umap/k2.png",
-        "/assets/projects/k-umap/k3.png",
+        \"assets/projects/k-umap/k1.png",
+        \"assets/projects/k-umap/k2.png",
+        \"assets/projects/k-umap/k3.png",
       ],
       featured: true,
       summary: "Enhanced dimensional reduction and clustering pipeline designed for institutional student health records.",
@@ -105,15 +105,15 @@ export const PORTFOLIO_DATA = {
       category: "Commercial" as const,
       categoryLabel: "Commercial · Field Deployment",
       date: "Feb 2026",
-      image: "/assets/projects/queue system/1.png",
+      image: \"assets/projects/queue system/1.png",
       gallery: [
-        "/assets/projects/queue system/1.png",
-        "/assets/projects/queue system/2.png",
-        "/assets/projects/queue system/3.png",
-        "/assets/projects/queue system/4.png",
-        "/assets/projects/queue system/5.png",
-        "/assets/projects/queue system/6.png",
-        "/assets/projects/queue system/7.png",
+        \"assets/projects/queue system/1.png",
+        \"assets/projects/queue system/2.png",
+        \"assets/projects/queue system/3.png",
+        \"assets/projects/queue system/4.png",
+        \"assets/projects/queue system/5.png",
+        \"assets/projects/queue system/6.png",
+        \"assets/projects/queue system/7.png",
       ],
       featured: true,
       summary: "Standalone offline-resilient queuing architecture built for joint governmental migrant worker facilities.",
@@ -133,9 +133,9 @@ export const PORTFOLIO_DATA = {
       category: "Commercial" as const,
       categoryLabel: "Commercial · Client Portal",
       date: "Sept 2026",
-      image: "/assets/projects/j.p lamug/web.png",
+      image: \"assets/projects/j.p lamug/web.png",
       gallery: [
-        "/assets/projects/j.p lamug/web.png",
+        \"assets/projects/j.p lamug/web.png",
       ],
       featured: false,
       summary: "Official patient portal and healthcare clinic web presence for specialized OB-GYNE practice in San Agustin, Isabela.",
@@ -155,13 +155,13 @@ export const PORTFOLIO_DATA = {
       category: "Personal" as const,
       categoryLabel: "Personal · Automation Project",
       date: "Aug 2026",
-      image: "/assets/projects/stock market/a1.png",
+      image: \"assets/projects/stock market/a1.png",
       gallery: [
-        "/assets/projects/stock market/a1.png",
-        "/assets/projects/stock market/a2.png",
-        "/assets/projects/stock market/a3.png",
-        "/assets/projects/stock market/a4.png",
-        "/assets/projects/stock market/a5.png",
+        \"assets/projects/stock market/a1.png",
+        \"assets/projects/stock market/a2.png",
+        \"assets/projects/stock market/a3.png",
+        \"assets/projects/stock market/a4.png",
+        \"assets/projects/stock market/a5.png",
       ],
       featured: false,
       summary: "Automated multi-source financial news aggregator and AI sentiment analyzer with webhook dispatch.",
@@ -180,10 +180,10 @@ export const PORTFOLIO_DATA = {
       category: "Personal" as const,
       categoryLabel: "Personal · Web Tool",
       date: "2026",
-      image: "/assets/projects/gmail signature/g1.png",
+      image: \"assets/projects/gmail signature/g1.png",
       gallery: [
-        "/assets/projects/gmail signature/g1.png",
-        "/assets/projects/gmail signature/g2.png",
+        \"assets/projects/gmail signature/g1.png",
+        \"assets/projects/gmail signature/g2.png",
       ],
       featured: false,
       summary: "Interactive email signature designer and HTML generator studio tailored for creative professionals.",
@@ -213,7 +213,7 @@ export const PORTFOLIO_DATA = {
         title: "Honor Graduate Eligibility — Cum Laude (PD 907)",
         issuer: "Civil Service Commission (Republic of the Philippines)",
         date: "July 2026",
-        image: "/assets/cert/honor_graduate.jpg",
+        image: \"assets/cert/honor_graduate.jpg",
         description: "Official civil service professional eligibility granted under Presidential Decree No. 907 to honor graduates of state universities."
       },
       {
@@ -221,7 +221,7 @@ export const PORTFOLIO_DATA = {
         title: "Accenture Technology Academy — Salesforce Track",
         issuer: "Accenture",
         date: "Feb 2026 – Apr 2026",
-        image: "/assets/cert/accenture.png",
+        image: \"assets/cert/accenture.png",
         description: "Specialized enterprise training on enterprise architecture, cloud solutions, and Salesforce development principles."
       },
       {
@@ -229,7 +229,7 @@ export const PORTFOLIO_DATA = {
         title: "Civil Service Eligible — Professional Level",
         issuer: "Civil Service Commission",
         date: "March 2024",
-        image: "/assets/cert/eligibility.jpg",
+        image: \"assets/cert/eligibility.jpg",
         description: "Passed Career Service Professional Examination demonstrating top-tier analytical and language proficiency."
       },
       {
@@ -237,7 +237,7 @@ export const PORTFOLIO_DATA = {
         title: "Academic Recognition Certificate — Cum Laude",
         issuer: "Isabela State University",
         date: "July 2026",
-        image: "/assets/cert/recognition.jpg",
+        image: \"assets/cert/recognition.jpg",
         description: "Commendation for exemplary academic excellence throughout the BSCS curriculum."
       }
     ]
@@ -283,7 +283,7 @@ export const PORTFOLIO_DATA = {
         "Glitched headline animations and 3D gradient text"
       ],
       techStack: ["HTML5", "CSS3 3D Transforms", "JavaScript", "Canvas API", "Font Awesome"],
-      previewImage: "/assets/v1/about.jpg",
+      previewImage: \"assets/v1/about.jpg",
       strengths: "Playful creative flair, tactile 3D CSS math, and developer aesthetic."
     },
     {
@@ -302,7 +302,7 @@ export const PORTFOLIO_DATA = {
         "Integrated conversation assistant for visitor Q&A"
       ],
       techStack: ["React 19", "Vite", "Tailwind CSS", "Motion", "TypeScript"],
-      previewImage: "/assets/v2/profile.jpg",
+      previewImage: \"assets/v2/profile.jpg",
       strengths: "Streamlined readability, clean certificate verification, and modern component architecture."
     }
   ]
