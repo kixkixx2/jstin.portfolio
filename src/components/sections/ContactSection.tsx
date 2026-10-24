@@ -7,29 +7,32 @@ interface ContactSectionProps {
   scrollProgress: number;
 }
 
-// Typing effect component for bot output
-const TypingEffect: React.FC<{ text: string; speed?: number; onProgress?: () => void; onComplete?: () => void }> = ({ text, speed = 8, onProgress, onComplete }) => {
+// Robust typed output message component that locks in after completion
+const TypedOutputMessage: React.FC<{ text: string; onProgress?: () => void; onComplete?: () => void }> = ({ text, onProgress, onComplete }) => {
   const [displayedText, setDisplayedText] = useState('');
+  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
+    if (isDone) {
+      setDisplayedText(text);
+      return;
+    }
+
     let i = 0;
     const interval = setInterval(() => {
-      setDisplayedText((prev) => {
-        if (i < text.length) {
-          const next = text.slice(0, i + 1);
-          i++;
-          if (onProgress) onProgress();
-          return next;
-        } else {
-          clearInterval(interval);
-          if (onComplete) onComplete();
-          return prev;
-        }
-      });
-    }, speed);
+      if (i < text.length) {
+        setDisplayedText(text.slice(0, i + 1));
+        i++;
+        if (onProgress) onProgress();
+      } else {
+        clearInterval(interval);
+        setIsDone(true);
+        if (onComplete) onComplete();
+      }
+    }, 8);
 
     return () => clearInterval(interval);
-  }, [text, speed, onProgress, onComplete]);
+  }, [text, isDone, onProgress, onComplete]);
 
   return <span>{displayedText}</span>;
 };
@@ -321,24 +324,19 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ scrollProgress }
                       </div>
                     ) : (
                       <div className="text-zinc-300 whitespace-pre-wrap pl-3 border-l border-zinc-700">
-                        {idx === terminalLogs.length - 1 ? (
-                          <TypingEffect
-                            text={log.text}
-                            speed={8}
-                            onProgress={() => {
-                              if (terminalLogsRef.current) {
-                                terminalLogsRef.current.scrollTop = terminalLogsRef.current.scrollHeight;
-                              }
-                            }}
-                            onComplete={() => {
-                              if (terminalLogsRef.current) {
-                                terminalLogsRef.current.scrollTop = terminalLogsRef.current.scrollHeight;
-                              }
-                            }}
-                          />
-                        ) : (
-                          log.text
-                        )}
+                        <TypedOutputMessage
+                          text={log.text}
+                          onProgress={() => {
+                            if (terminalLogsRef.current) {
+                              terminalLogsRef.current.scrollTop = terminalLogsRef.current.scrollHeight;
+                            }
+                          }}
+                          onComplete={() => {
+                            if (terminalLogsRef.current) {
+                              terminalLogsRef.current.scrollTop = terminalLogsRef.current.scrollHeight;
+                            }
+                          }}
+                        />
                       </div>
                     )}
                   </div>
